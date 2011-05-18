@@ -57,24 +57,4 @@ public class SteamDeals extends Activity
         }
 
     }
-    
-    public boolean isOnline() {
-        boolean wifi = false;
-        boolean mobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] net = cm.getAllNetworkInfo();
-        for(NetworkInfo ni : net) {
-            if(ni.getTypeName().equalsIgnoreCase("WIFI")) {
-                if(ni.isConnected())
-                    wifi = true;
-            }
-            if(ni.getTypeName().equalsIgnoreCase("MOBILE")) {
-                if(ni.isConnected())
-                    mobile = true;
-            }
-        }
-
-        return wifi || mobile;
-    }
 }
