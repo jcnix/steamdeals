@@ -19,31 +19,62 @@
 package org.cjones.steam;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.TextView;
 
 public class SteamDeals extends Activity
 {
+    private TextView tv;
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        tv = new TextView(this);
+        tv.setText("");
+        setContentView(tv);
+        run();
+    }
+
+    public void run() {
         String title = "";
-        TextView tv = new TextView(this);
-        tv.setText(title);
-        setContentView(tv);        
-        
         Downloader d = new Downloader();
         Parser p = new Parser();
         
-        String htmllink = d.getSteamHomepage();
-        String link = p.parseHyperlink(htmllink);
+        if(d.testConnection()) {
+            String htmllink = d.getSteamHomepage();
+            String link = p.parseHyperlink(htmllink);
 
-        String htmltitle = d.getGameTitle(link);
-        title = p.parseTitle(htmltitle);
+            String htmltitle = d.getGameTitle(link);
+            title = p.parseTitle(htmltitle);
+            tv.setText(title);
+        } else {
+            tv.setText("Not connected to the Internet.  Connect and "+
+                "restart the app.");
+        }
 
-        tv.setText(title);
+    }
+    
+    public boolean isOnline() {
+        boolean wifi = false;
+        boolean mobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] net = cm.getAllNetworkInfo();
+        for(NetworkInfo ni : net) {
+            if(ni.getTypeName().equalsIgnoreCase("WIFI")) {
+                if(ni.isConnected())
+                    wifi = true;
+            }
+            if(ni.getTypeName().equalsIgnoreCase("MOBILE")) {
+                if(ni.isConnected())
+                    mobile = true;
+            }
+        }
+
+        return wifi || mobile;
     }
 }
