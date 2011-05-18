@@ -1,6 +1,6 @@
 A simple Android App that shows the deal of the day on Steam
 
 TODO:
-- Lots of stuff
-- Force close if no network connection is available.
+- Add a refresh button
+- Possibly make app into a Widget 
 
