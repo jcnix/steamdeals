@@ -11,5 +11,11 @@
     android:layout_height="wrap_content" 
     android:text="Hello son, SteamDeals"
     />
+<Button
+    android:id="@+id/refresh_widget"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:text="Refresh"
+    />
 </LinearLayout>
 

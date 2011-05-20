@@ -23,6 +23,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View.OnClickListener;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class SteamDeals extends Activity
@@ -32,14 +35,29 @@ public class SteamDeals extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
         
-        tv = new TextView(this);
-        tv.setText("");
-        setContentView(tv);
+        tv = (TextView) findViewById(R.id.textview);
+        Button ref = (Button) findViewById(R.id.refresh);
+        ref.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
+
         run();
     }
 
     public void run() {
+        refresh();
+    }
+
+    public void refresh(View view) {
+        refresh();
+    }
+
+    public void refresh() {
         String title = "";
         Downloader d = new Downloader();
         Parser p = new Parser();
@@ -55,6 +73,5 @@ public class SteamDeals extends Activity
             tv.setText("Not connected to the Internet.  Connect and "+
                 "restart the app.");
         }
-
     }
 }

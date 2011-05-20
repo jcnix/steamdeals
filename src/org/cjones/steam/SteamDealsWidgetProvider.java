@@ -1,5 +1,5 @@
 /**
- * This file is part of Foobar.
+ * This file is part of SteamDeals.
  * @author Casey Jones
  * 
  * Foobar is free software: you can redistribute it and/or modify
@@ -21,24 +21,29 @@ package org.cjones.steam;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View.OnClickListener;
+import android.view.View;
 import android.widget.TextView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.widget.RemoteViews;
 
-
 public class SteamDealsWidgetProvider extends AppWidgetProvider {
+    private RemoteViews remoteViews;
+    private ComponentName steamWidget;
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        RemoteViews remoteViews;
-        ComponentName steamWidget;
-
         remoteViews = new RemoteViews(context.getPackageName(), R.layout.steamdeals_appwidget);
         steamWidget = new ComponentName(context, SteamDealsWidgetProvider.class);
+        refresh();
+        appWidgetManager.updateAppWidget(steamWidget, remoteViews);
+    }
 
+    public void refresh() {
         String title = "";
         Downloader d = new Downloader();
         Parser p = new Parser();
@@ -54,8 +59,6 @@ public class SteamDealsWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.widget_textview, "Not connected to the Internet.  Connect and "+
                 "restart the app.");
         }
-
-        appWidgetManager.updateAppWidget( steamWidget, remoteViews );
     }
 }
 
